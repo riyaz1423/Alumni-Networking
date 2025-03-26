@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Vacancy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen py-8">
+    <div class="bg-white p-8 rounded shadow-lg max-w-lg w-full">
+        <h2 class="text-2xl font-bold text-center mb-4">Post a Job Vacancy</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="text-red-500">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium">Job Title</label>
+                <input type="text" name="title" class="border p-2 w-full rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium">Link</label>
+                <input type='text' name="description" class="border p-2 w-full rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium">Company Name</label>
+                <input type="text" name="company" class="border p-2 w-full rounded" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-medium">Location</label>
+                <input type="text" name="location" class="border p-2 w-full rounded">
+            </div>
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded w-full">Post Vacancy</button>
+        </form>
+
+        <a href="{% url 'dashboard' %}" class="block text-center mt-4 text-blue-600 font-medium hover:underline">⬅ Back to Dashboard</a>
+    </div>
+
+    <!-- Display Vacancies Posted by This Alumni -->
+    <div class="mt-8 max-w-lg w-full">
+        <h3 class="text-xl font-bold mb-4 text-center">Your Posted Vacancies</h3>
+
+        {% if alumni_vacancies %}
+            <ul class="bg-white p-4 rounded shadow-lg">
+                {% for vacancy in alumni_vacancies %}
+                    <li class="mb-4 p-4 border rounded flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-bold">{{ vacancy.title }}</h4>
+                            <p class="text-gray-700"><strong>Company:</strong> {{ vacancy.company }}</p>
+                            <p class="text-gray-700"><strong>Apply Link:</strong> 
+                                <a href="{{ vacancy.description }}" target="_blank" class="text-blue-600 underline">
+                                    {{ vacancy.description }}
+                                </a>
+                            </p>
+                            <p class="text-gray-600"><strong>Location:</strong> {{ vacancy.location|default:"Not specified" }}</p>
+                            <p class="text-gray-500 text-sm">Posted on: {{ vacancy.created_at|date:"F j, Y" }}</p>
+                        </div>
+                        <form method="POST" action="{% url 'delete_vacancy' vacancy.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-500 text-white py-1 px-2 rounded text-sm">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-gray-500 text-center mt-4">No vacancies posted yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

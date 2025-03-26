@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Registration</title>
+    
+    <!-- Tailwind CSS & Materialize -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <style>
+        body {
+            background-image: url('../static/images/bg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .overlay {
+            
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <!-- Navbar -->
+    <nav class="bg-blue-700 p-4 shadow-lg relative z-10">
+        <h2 class="text-white text-center text-2xl font-bold">Alumni Registration</h2>
+    </nav>
+
+    <div class="container mx-auto max-w-lg mt-10 bg-white p-8 rounded-lg shadow-lg relative z-10">
+        <h3 class="text-blue-700 text-2xl font-bold text-center mb-5">Join the Alumni Network</h3>
+        <p class="text-gray-700 text-center mb-6">
+            "Reconnect with your batchmates, share career updates, and grow together!"
+        </p>
+
+        <!-- Registration Form -->
+        <form method="POST" class="space-y-4" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            <div class="input-field">
+                {{ form.username.label_tag }}
+                <input type="text" id="username" name="username" class="validate" placeholder="Enter Username" required>
+            </div>
+
+            <div class="input-field">
+                {{ form.email.label_tag }}
+                <input type="email" id="email" name="email" class="validate" placeholder="Enter Email" required>
+                <span id="emailError" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="input-field">
+                {{ form.password.label_tag }}
+                <input type="password" id="password" name="password" class="validate" placeholder="Enter Password" required>
+                <span id="passwordError" class="text-red-500 text-sm"></span>
+            </div>
+
+            <div class="input-field">
+                {{ profile_form.batch.label_tag }}
+                <input type="number" id="batch" name="batch" class="validate" placeholder="Batch Year" required>
+            </div>
+
+            <div class="input-field">
+                {{ profile_form.department.label_tag }}
+                <input type="text" id="department" name="department" class="validate" placeholder="Department" required>
+            </div>
+
+            <div class="input-field">
+                {{ profile_form.position.label_tag }}
+                <input type="text" id="position" name="position" class="validate" placeholder="Your Position" required>
+            </div>
+
+            <div class="input-field">
+                {{ profile_form.company.label_tag }}
+                <input type="text" id="company" name="company" class="validate" placeholder="Company Name" required>
+            </div>
+
+            <div class="input-field">
+                {{ profile_form.contact.label_tag }}
+                <input type="text" id="contact" name="contact" class="validate" placeholder="Contact Number" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-700 text-white p-3 rounded-lg text-lg font-semibold hover:bg-blue-800 transition">
+                🎓 Register Now
+            </button>
+            <p class="text-center mt-4 text-gray-600">
+                Back to 
+                <a href="/" class="text-blue-600 hover:underline">Home</a>
+            </p>
+        </form>
+    </div>
+
+    <!-- JavaScript Validation -->
+    <script>
+        function validateForm() {
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let emailError = document.getElementById("emailError");
+            let passwordError = document.getElementById("passwordError");
+
+            emailError.innerText = "";
+            passwordError.innerText = "";
+
+            // Email Validation
+            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                emailError.innerText = "Please enter a valid email address!";
+                return false;
+            }
+
+            // Password Validation (Minimum 6 characters)
+            if (password.length < 6) {
+                passwordError.innerText = "Password must be at least 6 characters long!";
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+</html>

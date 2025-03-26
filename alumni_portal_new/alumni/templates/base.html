@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Alumni Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    
+    <!-- Navigation -->
+    <nav class="bg-blue-700 p-5 text-white shadow-lg flex justify-between items-center">
+        <div class="text-2xl font-bold">Online Alumni Portal</div>
+        <div>
+            {% if user.is_authenticated %}
+                <span class="mr-4">Welcome, {{ user.username }}</span>
+                <a href="{% url 'edit_alumni' %}" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">Edit Profile</a>
+                <a href="{% url 'logout' %}" class="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition ml-2">Logout</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-200 transition">🎓 Join the Alumni Network</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-[400px] bg-cover flex items-center justify-center text-white" style="background-image: url('../static/images/home.jpg');">
+        <div class="bg-black bg-opacity-50 p-10 rounded-lg text-center">
+            <h1 class="text-5xl font-extrabold">Welcome to Our Alumni Network</h1>
+            <p class="text-lg mt-3">Stay connected, share experiences, and grow with us.</p>
+            <div class="text-center mt-12">
+                <a href="{% url 'login' %}" class="bg-blue-700 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-800 transition">
+                    🎓 Login to Alumni Network
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="mt-10 bg-white p-8 rounded-lg shadow-lg text-center">
+        <h2 class="text-4xl font-bold text-blue-700">Meet Our Alumni</h2>
+        <p class="text-lg text-gray-700 mt-4">Connect with our alumni and explore job opportunities.</p>
+        <div class="mt-6">
+            <a href="{% url 'all_alumni' %}" class="bg-blue-700 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-blue-800 transition">
+                👥 View All Alumni
+            </a>
+        </div>
+    </section>
+    
+    <div class="container mx-auto p-10">
+
+       
+
+        <section class="mt-10 bg-gray-200 p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-4xl font-bold text-blue-700">Upcoming Events</h2>
+            <ul class="mt-6 space-y-4 text-lg text-gray-700">
+                {% for event in event_list %}
+                    <li class="p-4 bg-white rounded-lg shadow-md">
+                        📅 <b>{{ event.title }}</b>: {{ event.date }}
+                    </li>
+                {% empty %}
+                    <li class="p-4 bg-white rounded-lg shadow-md">No upcoming events</li>
+                {% endfor %}
+            </ul>
+        </section>
+        
+        <!-- Featured Alumni -->
+        <section class="mt-10 bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-4xl font-bold text-blue-700">Recently Joined</h2>
+            <div class="mt-6 flex flex-wrap justify-center gap-6">
+                {% for alumni in alumni_list %}
+                    <div class="w-64 p-6 bg-gray-100 rounded-lg shadow-md">
+                        <h3 class="mt-4 text-xl font-bold">{{ alumni.user }}</h3>
+                        <p class="text-gray-600">Working as {{ alumni.position }} at {{ alumni.company }}</p>
+                    </div>
+                {% empty %}
+                    <p class="text-gray-600">No alumni details available.</p>
+                {% endfor %}
+            </div>
+        </section>
+ <!-- About Us -->
+ <section class="mt-10 bg-white p-8 rounded-lg shadow-lg text-center">
+    <h2 class="text-4xl font-bold text-blue-700">About Us</h2>
+    <p class="text-lg text-gray-700 mt-4">Our alumni network keeps graduates connected, providing mentorship, career opportunities, and lifelong learning experiences.</p>
+    <div class="mt-6 flex justify-center" style="height: 289px;">
+        {% load static %}
+        <img src="{% static 'images/graduation_0.jpg' %}" alt="Alumni">
+    </div>
+</section>
+        <!-- Alumni Stories -->
+        <section class="mt-10 bg-gray-200 p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-4xl font-bold text-blue-700">Alumni News & Stories</h2>
+            <p class="text-lg text-gray-700 mt-4">Discover inspiring success stories and news from our alumni and how they achieved their career goals.</p>
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {% for alumni in news_list %}
+                <div class="p-6 bg-white rounded-lg shadow-md">
+                    <h3 class="mt-4 text-xl font-bold">Posted By : {{ alumni.user }}</h3>
+                    <p class="text-gray-600 mt-2">{{ alumni.content }}.</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-600">No alumni details available.</p>
+            {% endfor %}
+
+               
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="mt-10 bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-4xl font-bold text-blue-700">What Our Alumni Say</h2>
+            <div class="mt-6 flex flex-wrap justify-center gap-6">
+                <div class="w-72 p-6 bg-gray-100 rounded-lg shadow-md">
+                    <p class="text-gray-700 italic">"The alumni network opened doors I never imagined. Truly a game-changer!"</p>
+                    <h3 class="mt-4 text-lg font-bold">- James Smith</h3>
+                </div>
+                <div class="w-72 p-6 bg-gray-100 rounded-lg shadow-md">
+                    <p class="text-gray-700 italic">"The mentorship program helped me secure a great job after graduation."</p>
+                    <h3 class="mt-4 text-lg font-bold">- Laura Adams</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us -->
+        <section class="mt-10 bg-gray-200 p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-4xl font-bold text-blue-700">Contact Us</h2>
+            <p class="text-lg text-gray-700 mt-4">📧 <b>Email:</b> support@alumniportal.com</p>
+            <p class="text-lg text-gray-700">📞 <b>Phone:</b> +123 456 7890</p>
+        </section>
+
+        <!-- Join Now -->
+      
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white text-center p-5 mt-10">
+        &copy; 2024 Alumni Portal. All Rights Reserved.
+    </footer>
+
+</body>
+</html>
